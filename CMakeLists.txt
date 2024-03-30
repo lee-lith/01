@@ -5,6 +5,13 @@ set(PROJECT_VESRION 0.0.${PATCH_VERSION})
 
 project(helloworld VERSION ${PROJECT_VESRION})
 
+include(FetchContent)
+FetchContent_Declare(
+  googletest
+  URL https://github.com/google/googletest/archive/77afe8e0149c207edd9561c28de6d2226673b51f.zip
+)
+FetchContent_MakeAvailable(googletest)
+
 find_package(Boost COMPONENTS unit_test_framework REQUIRED)
 
 configure_file(version.h.in version.h)
@@ -72,3 +79,14 @@ include(CPack)
 enable_testing()
 
 add_test(test_version test_version)
+
+
+add_executable(test_hello test_hello.cpp)
+
+target_link_libraries(
+  test_hello
+  GTest::gtest_main
+)
+
+include(GoogleTest)
+gtest_discover_tests(test_hello)
